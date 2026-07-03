@@ -1,18 +1,27 @@
 from fastapi import FastAPI
 
-from backend.database.connection import engine
-from backend.database.base import Base
+from backend.core import settings
 
-import backend.models
+from backend.database.init_db import init_db
 
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title="CustomerSphere AI"
+    title=settings.app.app_name,
+    version=settings.app.app_version,
 )
+
+
+@app.on_event("startup")
+def startup():
+
+    init_db()
+
 
 @app.get("/")
 def home():
+
     return {
-        "message": "CustomerSphere AI Backend Running"
+        "project": settings.app.app_name,
+        "version": settings.app.app_version,
+        "status": "Running"
     }
