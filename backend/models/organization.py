@@ -17,6 +17,6 @@ class Organization(Base):
 
     users = relationship("User", back_populates="organization")
 
-    customers = relationship("Customer", back_populates="organization")
+    customers = relationship("Customer", back_populates="organization", cascade="all, delete-orphan",)
 
     transactions = relationship("Transaction", back_populates="organization")

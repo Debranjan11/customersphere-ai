@@ -19,6 +19,14 @@ from backend.dependencies import (
 
 from backend.services.auth_service import AuthService
 
+#protected routes
+from fastapi.security import HTTPBearer
+from fastapi.security import HTTPAuthorizationCredentials
+
+from backend.core.security import decode_access_token
+
+security = HTTPBearer()
+
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
@@ -55,15 +63,6 @@ def login(
         "access_token": token,
         "token_type": "bearer",
     }
-
-#protected routes
-from fastapi.security import HTTPBearer
-from fastapi.security import HTTPAuthorizationCredentials
-
-from backend.core.security import decode_access_token
-
-security = HTTPBearer()
-
 
 @router.get("/me")
 def get_me(
