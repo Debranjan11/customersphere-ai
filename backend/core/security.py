@@ -22,30 +22,41 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     )
 
 
-def create_access_token(data: dict):
-    to_encode = data.copy()
-
-    expire = datetime.utcnow() + timedelta(
-        minutes=settings.security.access_token_expire_minutes
-    )
-
-    to_encode.update({"exp": expire})
+def create_access_token(
+    *,
+    user_id: int,
+    org_id: int,
+    role: str,
+):
+    payload = {
+        "user_id": user_id,
+        "org_id": org_id,
+        "role": role,
+        "exp": datetime.utcnow()
+        + timedelta(
+            minutes=settings.security.access_token_expire_minutes
+        ),
+    }
 
     return jwt.encode(
-        to_encode,
+        payload,
         settings.security.secret_key,
         algorithm=settings.security.algorithm,
     )
 
 
-def verify_token(token: str):
+def decode_access_token(token: str):
+
     try:
+
         payload = jwt.decode(
             token,
             settings.security.secret_key,
             algorithms=[settings.security.algorithm],
         )
+
         return payload
 
     except JWTError:
+
         return None

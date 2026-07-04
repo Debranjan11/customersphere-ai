@@ -10,6 +10,12 @@ from backend.schemas.auth import (
     LoginRequest,
     TokenResponse,
 )
+from backend.dependencies import (
+    get_current_user,
+    require_admin,
+    require_manager,
+    require_analyst,
+)
 
 from backend.services.auth_service import AuthService
 
@@ -54,26 +60,46 @@ def login(
 from fastapi.security import HTTPBearer
 from fastapi.security import HTTPAuthorizationCredentials
 
-from backend.core.security import verify_token
+from backend.core.security import decode_access_token
 
 security = HTTPBearer()
 
 
 @router.get("/me")
-def me(
-    credentials: HTTPAuthorizationCredentials = Depends(
-        security
-    ),
+def get_me(
+    current_user=Depends(get_current_user),
 ):
+    return {
+        "id": current_user.id,
+        "name": current_user.name,
+        "email": current_user.email,
+        "role": current_user.role,
+        "organization_id": current_user.org_id,
+    }
 
-    payload = verify_token(
-        credentials.credentials
-    )
+@router.get("/admin")
+def admin_dashboard(
+    current_user=Depends(require_admin),
+):
+    return {
+        "message": "Welcome Admin",
+        "user": current_user.name,
+    }
 
-    if payload is None:
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid Token",
-        )
+@router.get("/manager")
+def manager_dashboard(
+    current_user=Depends(require_manager),
+):
+    return {
+        "message": "Manager Dashboard",
+        "user": current_user.name,
+    }
 
-    return payload
+@router.get("/analytics")
+def analytics_dashboard(
+    current_user=Depends(require_analyst),
+):
+    return {
+        "message": "Analytics Dashboard",
+        "user": current_user.name,
+    }

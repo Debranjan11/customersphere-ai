@@ -2,12 +2,18 @@ from sqlalchemy.orm import Session
 
 from backend.models.organization import Organization
 from backend.models.user import User
+from backend.repositories.base_repository import BaseRepository
 
 
-class AuthRepository:
+class AuthRepository(BaseRepository):
 
-    def __init__(self, db: Session):
-        self.db = db
+    def get_user_by_id(self, user_id):
+
+        return (
+        self.db.query(User)
+        .filter(User.id == user_id)
+        .first()
+    )
 
     def create_organization(self, organization):
         self.db.add(organization)

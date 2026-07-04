@@ -59,11 +59,9 @@ class AuthService:
             return None
 
         token = create_access_token(
-            {
-                "user_id": user.id,
-                "org_id": user.org_id,
-                "role": user.role,
-            }
+        user_id=user.id,
+        org_id=user.org_id,
+        role=user.role,
         )
 
         return token
