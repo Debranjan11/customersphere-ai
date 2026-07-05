@@ -11,5 +11,11 @@ from .customer import (
     CustomerResponse,
     CustomerListResponse,
 )
+from .transaction import (
+    TransactionCreate,
+    TransactionUpdate,
+    TransactionResponse,
+    TransactionListResponse,
+)
 
 from .common import MessageResponse

@@ -54,9 +54,9 @@ def decode_access_token(token: str):
             settings.security.secret_key,
             algorithms=[settings.security.algorithm],
         )
-
+        print("Decoded payload:",payload)
         return payload
 
-    except JWTError:
-
+    except JWTError as e:
+        print("JWT ERROR:", repr(e))
         return None
