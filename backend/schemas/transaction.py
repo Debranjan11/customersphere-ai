@@ -4,6 +4,8 @@ from pydantic import BaseModel, Field
 
 from enum import Enum
 
+from backend.models.transaction import Transaction
+
 # ----------------------------------------
 # Enums
 # ----------------------------------------
