@@ -55,7 +55,7 @@ class TransactionBase(BaseModel):
 
     payment_method: PaymentMethod
 
-    status: TransactionStatus = TransactionStatus.COMPLETED
+    status: TransactionStatus = "Completed"
 
 
 # ----------------------------------------

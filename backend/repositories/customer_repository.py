@@ -1,4 +1,4 @@
-from sqlalchemy import asc, desc, or_
+from sqlalchemy import (asc, desc, or_, func,)
 
 from backend.models.customer import Customer
 from backend.repositories.base_repository import BaseRepository
@@ -11,6 +11,14 @@ class CustomerRepository(BaseRepository):
         self.db.commit()
         self.db.refresh(customer)
         return customer
+    
+    def create_many(self, customers: list[Customer]):
+
+        self.db.add_all(customers)
+
+        self.db.commit()
+
+        return customers
 
     def get_by_id(self, customer_id: int, org_id: int):
         return (
@@ -142,3 +150,30 @@ class CustomerRepository(BaseRepository):
             .first()
         )
     
+    def get_all_by_organization(
+        self,
+        org_id: int,
+    ):
+        return (
+            self.db.query(Customer)
+            .filter(
+                Customer.org_id == org_id,
+                Customer.is_active == True,
+            )
+            .all()
+        )
+    
+    def get_customer_count(
+        self,
+        org_id: int,
+    ):
+        return (
+            self.db.query(
+                func.count(Customer.id)
+            )
+            .filter(
+                Customer.org_id == org_id,
+                Customer.is_active == True,
+            )
+            .scalar()
+        )

@@ -12,6 +12,8 @@ from backend.api.transaction_routes import router as transaction_router
 
 from backend.api.analytics_routes import router as analytics_router
 
+from backend.api.segmentation_routes import( router as segmentation_router)
+
 app = FastAPI(
     title=settings.app.app_name,
     version=settings.app.app_version,
@@ -39,3 +41,5 @@ app.include_router(customer_router)
 app.include_router(transaction_router)
 
 app.include_router(analytics_router)
+
+app.include_router(segmentation_router)

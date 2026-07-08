@@ -1,0 +1,23 @@
+CHAMPIONS = "Champions"
+
+LOYAL_CUSTOMERS = "Loyal Customers"
+
+BIG_SPENDERS = "Big Spenders"
+
+POTENTIAL_LOYALISTS = "Potential Loyalists"
+
+AT_RISK = "At Risk"
+
+LOST_CUSTOMERS = "Lost Customers"
+
+ORGANIZATION_COUNT = 5
+
+CUSTOMERS_PER_ORG = 25
+
+MIN_TRANSACTIONS = 10
+
+MAX_TRANSACTIONS = 40
+
+DEFAULT_PASSWORD = "Admin@123"
+
+RANDOM_SEED = 42

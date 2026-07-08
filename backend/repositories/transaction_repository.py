@@ -17,6 +17,14 @@ class TransactionRepository(BaseRepository):
         self.db.commit()
         self.db.refresh(transaction)
         return transaction
+    
+    def create_many(self, transactions: list[Transaction]):
+
+        self.db.add_all(transactions)
+
+        self.db.commit()
+
+        return transactions
 
     def get_by_id(self, transaction_id: int, org_id: int):
         return (
@@ -285,3 +293,31 @@ class TransactionRepository(BaseRepository):
             }
             for row in rows
         ]
+    
+    def get_transaction_count(
+        self,
+        org_id,
+    ):
+
+        return (
+            self.db.query(
+                func.count(Transaction.id)
+            )
+            .filter(
+                Transaction.org_id == org_id
+            )
+            .scalar()
+        )
+    
+    def get_all_by_organization(
+        self,
+        org_id,
+    ):
+
+        return (
+            self.db.query(Transaction)
+            .filter(
+                Transaction.org_id == org_id
+            )
+            .all()
+        )
