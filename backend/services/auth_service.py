@@ -9,7 +9,11 @@ from backend.core.security import (
     create_access_token,
 )
 
-from backend.schemas.auth import UserRole
+from backend.schemas.auth import (
+    UserRole,
+    LoginResponse,
+    UserResponse,
+)
 
 
 class AuthService:
@@ -64,4 +68,14 @@ class AuthService:
         role=user.role,
         )
 
-        return token
+        return LoginResponse(
+        access_token=token,
+        token_type="bearer",
+        user=UserResponse(
+            id=user.id,
+            name=user.name,
+            email=user.email,
+            role=user.role,
+            org_id=user.org_id,
+        ),
+    )

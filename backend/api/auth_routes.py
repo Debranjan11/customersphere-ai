@@ -8,7 +8,7 @@ from backend.database.session import get_db
 from backend.schemas.auth import (
     RegisterRequest,
     LoginRequest,
-    TokenResponse,
+    LoginResponse,
 )
 from backend.dependencies import (
     get_current_user,
@@ -42,7 +42,7 @@ def register(
 
 @router.post(
     "/login",
-    response_model=TokenResponse,
+    response_model=LoginResponse,
 )
 def login(
     request: LoginRequest,
@@ -51,18 +51,15 @@ def login(
 
     service = AuthService(db)
 
-    token = service.login(request)
+    response = service.login(request)
 
-    if token is None:
+    if response is None:
         raise HTTPException(
             status_code=401,
             detail="Invalid email or password",
         )
 
-    return {
-        "access_token": token,
-        "token_type": "bearer",
-    }
+    return response
 
 @router.get("/me")
 def get_me(
